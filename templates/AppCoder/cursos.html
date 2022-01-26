@@ -1,0 +1,21 @@
+{% extends 'AppCoder/padre.html' %}
+
+{% block contenidoQueCambia %}
+    <h2><a href="{% url 'BuscarCurso'%}">Busqueda Avanzada</a></h2>
+    <h4>Los Cursos son: <h4>
+        {%for curso in cursos%}
+            {{curso}}
+            <a href="{% url 'curso_view' curso.id %}">Detalle</a>
+            <a href="{% url 'curso_update' curso.id %}">Modificar</a>
+            <a href="{% url 'curso_delete' curso.id %}">Borrar</a>
+            <br>
+        {% endfor %}
+
+    <a class="btn btn-primary" href="{% url 'curso_add' %}">Agregar</a>
+
+
+{% endblock %}
+
+{% block titulo %}
+        Cursos
+{% endblock %}

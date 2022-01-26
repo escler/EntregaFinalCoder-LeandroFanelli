@@ -1,0 +1,15 @@
+{% extends 'AppCoder/padre.html' %}
+
+{% block contenidoQueCambia %}
+<body>
+Indique la camada del curso:
+    <form action="/AppCoder/cursos/resultadoBuscarCurso/" method="Get">
+
+        Camada<input type="number" name="camada" id="camada">
+
+        <input type="submit" name="Buscar">
+    
+    </form>
+
+</body>
+{% endblock %}

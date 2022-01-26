@@ -1,0 +1,20 @@
+{% extends 'AppCoder/padre.html' %}
+
+{% block contenidoQueCambia %}
+    <h4>Los Estudiantes son: <h4>
+        {%for estudiante in estudiantes%}
+            {{estudiante}}
+            <a href="{% url 'estudiante_view' estudiante.id %}">Detalle</a>
+            <a href="{% url 'estudiante_update' estudiante.id %}">Modificar</a>
+            <a href="{% url 'estudiante_delete' estudiante.id %}">Borrar</a>
+            <br>
+        {% endfor %}
+
+    <a class="btn btn-primary" href="{% url 'estudiante_add' %}">Agregar</a>
+
+
+{% endblock %}
+
+{% block titulo %}
+        Estudiantes
+{% endblock %}
