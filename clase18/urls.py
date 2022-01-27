@@ -22,8 +22,8 @@ from clase18.views import login_request, register, about, inicio
 urlpatterns = [
     path('admin/', admin.site.urls, name='Admin'),
     path('', include('AppCoder.urls')), 
-    path('login/', login_request, name='login'),
-    path('register/', register, name='registro'),
+    path('accounts/login/', login_request, name='login'),
+    path('accounts/signup/', register, name='registro'),
     path('logout/', LogoutView.as_view(template_name='logout.html'),name = 'logout'),
     path('about/', about, name = 'about'),
     path('', inicio, name='Inicio'),
