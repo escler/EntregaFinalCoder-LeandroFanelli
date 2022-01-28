@@ -1,6 +1,5 @@
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from clase18.forms import UserRegisterForm
 from django.contrib.auth.decorators import login_required
@@ -35,7 +34,7 @@ def register(request):
             
             username = form.cleaned_data['username']
             form.save()
-            return render(request, 'registroCompletado.html', {'username', username})
+            return render(request, 'registroCompletado.html')
         
     else:
         form = UserRegisterForm()
