@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render, redirect
-from clase18.forms import UserRegisterForm
+from clase18.forms import UserEditForm, UserRegisterForm
 from django.contrib.auth.decorators import login_required
 
 def login_request(request):
@@ -47,3 +47,33 @@ def about(request):
 
 def inicio(request):
     return render(request, 'AppCoder/inicio.html')
+
+@login_required
+
+def editProfile(request):
+    
+    usuario = request.user
+    
+    if request.method == 'POST':
+        
+        form = UserEditForm(request.POST)
+        
+        if form.is_valid():
+            
+            data = form.cleaned_data
+            
+            usuario.email = data['email']
+            usuario.set_password(data['password1'])
+            usuario.password2 = data['password2']             
+            usuario.first_name = data['first_name']
+            usuario.last_name = data['last_name']
+            
+            usuario.save()
+            
+            return render(request, 'AppCoder/Inicio.html')
+        
+    else:
+        
+        form = UserEditForm(initial={'email':usuario.email, 'first_name':usuario.first_name, 'last_name':usuario.last_name})
+    
+    return render(request, 'AppCoder/profile_edit.html', {'form':form, 'usuario': usuario})

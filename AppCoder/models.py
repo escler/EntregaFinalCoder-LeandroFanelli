@@ -9,7 +9,7 @@ from datetime import datetime
 class Page(Model):
     titulo = CharField(max_length=20)
     subtitulo = CharField(max_length=50)
-    cuerpo = CharField(max_length=500)
+    cuerpo = CharField(max_length=10000)
     autor = CharField(max_length=20)
     fecha = DateTimeField(default=datetime.now(), editable=True)
     
