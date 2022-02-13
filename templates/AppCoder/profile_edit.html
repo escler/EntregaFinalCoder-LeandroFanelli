@@ -2,22 +2,18 @@
 
 {% block contenidoQueCambia %}
 
-<body>
-    
-    <h1>Editar - Perfil </h1>
-    <h1> De {{usuario}} </h1>
+{% if form.errors %}
+    <p style="color: red;">{{ form.errors }}</p>
+    {% endif %}
 
-    <form action="" method="POST">{% csrf_token %}
 
-        <table>
+    <form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
 
-            {{ form.as_table }}
+    <table>
+        {{ form.as_table }}
+    </table>
 
-        </table>
-
-        <input type="submit", value="Enviar">
-    
+    <input type="submit" value="Enviar">
     </form>
-
-</body>
 {% endblock %}

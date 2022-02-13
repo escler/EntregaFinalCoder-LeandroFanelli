@@ -1,6 +1,7 @@
+from django.forms import Form, Textarea
 from django.contrib.auth.forms import UserCreationForm
+from django.forms import EmailField, CharField, PasswordInput, ImageField, DateTimeField
 from django.contrib.auth.models import User
-from django.forms import EmailField, CharField, PasswordInput
 
 class UserRegisterForm(UserCreationForm):
     email = EmailField()
@@ -25,3 +26,14 @@ class UserEditForm(UserCreationForm):
         model = User
         fields = ['email', 'first_name', 'last_name','password1', 'password2']
         help_texts = {k:'' for k in fields}
+        
+class EditAvatar(Form):
+    imagen = ImageField(required=False)
+
+class CreateBlog(Form):
+    titulo = CharField(max_length=20)
+    subtitulo = CharField(max_length=50)
+    cuerpo = CharField(max_length=10000, widget=Textarea)
+    autor = CharField(max_length=20)
+    imagen = ImageField(required=True)
+    

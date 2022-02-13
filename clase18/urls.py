@@ -16,8 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
 from django.urls import path, include
-from clase18.views import login_request, register, about, inicio, editProfile
-
+from clase18.views import login_request, register, about, inicio, editProfile, agregar_avatar
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls, name='Admin'),
@@ -26,6 +27,9 @@ urlpatterns = [
     path('accounts/signup/', register, name='registro'),
     path('logout/', LogoutView.as_view(template_name='logout.html'),name = 'logout'),
     path('accounts/editprofile', editProfile, name='profile_edit'),
+    path('accounts/editavatar', agregar_avatar, name='edit_avatar'),
     path('about/', about, name = 'about'),
     path('', inicio, name='Inicio'),
 ]
+
+urlpatterns+= static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,8 +1,10 @@
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
+from AppCoder.models import Avatar
 from clase18.forms import UserEditForm, UserRegisterForm
 from django.contrib.auth.decorators import login_required
+from clase18.forms import EditAvatar
 
 def login_request(request):
     if request.method == 'POST':
@@ -43,16 +45,27 @@ def register(request):
 
 @login_required
 def about(request):
-    return render(request, 'about.html')
+    avatares = Avatar.objects.filter(user=request.user.id)
+    if avatares.count() == 0:
+        return render(request, 'about.html', {'avatar_url':'/media/avatares/Default_Image.png'})
+    else:
+        return render(request, 'about.html', {'avatar_url':avatares[0].imagen.url})
 
 def inicio(request):
-    return render(request, 'AppCoder/inicio.html')
+    avatares = Avatar.objects.filter(user=request.user.id)
+    if avatares.count() == 0:
+        return render(request, 'AppCoder/inicio.html', {'avatar_url': '/media/avatares/Default_Image.png'})
+    else:
+        print(Avatar.objects.count())
+        return render(request, 'AppCoder/inicio.html', {'avatar_url':avatares[0].imagen.url})
 
 @login_required
 
 def editProfile(request):
     
     usuario = request.user
+    
+    avatares = Avatar.objects.filter(user=request.user.id)
     
     if request.method == 'POST':
         
@@ -70,10 +83,30 @@ def editProfile(request):
             
             usuario.save()
             
-            return render(request, 'AppCoder/Inicio.html')
+            return render(request, 'edit_profile_success.html')
         
     else:
-        
-        form = UserEditForm(initial={'email':usuario.email, 'first_name':usuario.first_name, 'last_name':usuario.last_name})
+        if avatares.count() == 0:
+            form = UserEditForm(initial={'email':usuario.email, 'first_name':usuario.first_name, 'last_name':usuario.last_name, 'avatar_url':'/media/avatares/Default_Image.png'})
+        else:
+            form = UserEditForm(initial={'email':usuario.email, 'first_name':usuario.first_name, 'last_name':usuario.last_name, 'avatar_url':avatares[0].imagen.url}) 
+            
+    if avatares.count() == 0:       
+        return render(request, 'AppCoder/profile_edit.html', {'form':form, 'usuario': usuario, 'avatar_url':'/media/avatares/Default_Image.png'}) 
+    else:
+        return render(request, 'AppCoder/profile_edit.html', {'form':form, 'usuario': usuario, 'avatar_url':avatares[0].imagen.url})
+
+@login_required
+def agregar_avatar(request):
     
-    return render(request, 'AppCoder/profile_edit.html', {'form':form, 'usuario': usuario})
+    if request.method == 'POST':
+        formulario = EditAvatar(request.POST, request.FILES)
+
+        if formulario.is_valid():
+            avatar = Avatar(user=request.user, imagen=formulario.cleaned_data['imagen'])
+            avatar.save()
+            return redirect('Inicio')
+    else:
+        formulario = EditAvatar()
+
+    return render(request, 'AppCoder/editAvatar.html', {'form': formulario})
